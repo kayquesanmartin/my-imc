@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -15,8 +16,45 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainButton: Button
     private lateinit var heightEditText: EditText
     private lateinit var weightEditText: EditText
+    private lateinit var unitSpinner: Spinner
 
-    fun validateInput(): Boolean {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_main)
+
+        resultTextView = findViewById(R.id.resultTextView)
+        mainButton = findViewById(R.id.mainButton)
+        heightEditText = findViewById(R.id.heightEditText)
+        weightEditText = findViewById(R.id.weightEditText)
+        unitSpinner = findViewById(R.id.spinner)
+
+        mainButton.setOnClickListener {
+            if (validateInput()) {
+                val height: Double = getConvertedHeight()
+                val weight: Double = weightEditText.text.toString().toDouble()
+
+                Toast.makeText(
+                    this,
+                    "IMC calculado com sucesso!",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                val imc = weight / (height * height)
+
+                resultTextView.text = when {
+                    imc < 18.5 -> getString(R.string.underweight)
+                    imc in 18.5..24.9 -> getString(R.string.normal)
+                    imc in 25.0..29.9 -> getString(R.string.overweight)
+                    imc in 30.0..34.9 -> getString(R.string.obesityI)
+                    imc in 35.0..39.9 -> getString(R.string.obesityII)
+                    else -> getString(R.string.obesityIII)
+                }
+            }
+        }
+    }
+
+    private fun validateInput(): Boolean {
 
         val height = heightEditText.text.toString()
         val weight = weightEditText.text.toString()
@@ -49,38 +87,14 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+    private fun getConvertedHeight(): Double {
+        val height = heightEditText.text.toString().toDouble()
+        val selectedUnit = unitSpinner.selectedItem.toString()
 
-        resultTextView = findViewById(R.id.resultTextView)
-        mainButton = findViewById(R.id.mainButton)
-        heightEditText = findViewById(R.id.heightEditText)
-        weightEditText = findViewById(R.id.weightEditText)
-
-        mainButton.setOnClickListener {
-            if (validateInput()) {
-                val height: Double = heightEditText.text.toString().toDouble()
-                val weight: Double = weightEditText.text.toString().toDouble()
-
-                Toast.makeText(
-                    this,
-                    "IMC calculado com sucesso!",
-                    Toast.LENGTH_LONG
-                ).show()
-
-                val imc = weight / (height * height)
-
-                when {
-                    imc < 18.5 -> resultTextView.text = getString(R.string.underweight)
-                    imc in 18.5..24.9 -> resultTextView.text = getString(R.string.normal)
-                    imc in 25.0..29.9 -> resultTextView.text = getString(R.string.overweight)
-                    imc in 30.0..34.9 -> resultTextView.text = getString(R.string.obesityI)
-                    imc in 35.0..39.9 -> resultTextView.text = getString(R.string.obesityII)
-                    else -> resultTextView.text = getString(R.string.obesityIII)
-                }
-            }
+        return if (selectedUnit == "ft") {
+            height * 0.3048
+        } else {
+            height
         }
     }
 }

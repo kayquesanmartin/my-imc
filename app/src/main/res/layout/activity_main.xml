@@ -16,7 +16,7 @@
         android:layout_marginTop="100dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="60dp"
-        android:text="Cálculo de IMC"
+        android:text="@string/calculo_de_imc"
         android:textColor="#42037C"
         android:textSize="48sp"
         android:textStyle="bold" />
@@ -47,12 +47,18 @@
                 android:layout_width="111dp"
                 android:layout_height="48dp"
                 android:autofillHints=""
-                android:hint="@string/cm"
+                android:hint="@string/m"
                 android:inputType="numberDecimal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:entries="@array/activity_height"/>
         </TableRow>
 
         <TableRow
@@ -103,7 +109,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
-        android:text="Resultado:"
+        android:text="@string/resultado"
         android:textSize="20sp" />
 
 
