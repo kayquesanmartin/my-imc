@@ -5,4 +5,11 @@
     <string name="weight">Peso:</string>
     <string name="height">Altura:</string>
     <string name="imc">IMC</string>
+    <string name="teste">Teste</string>
+    <string name="underweight">Abaixo do peso</string>
+    <string name="normal">Peso normal</string>
+    <string name="overweight">Sobrepeso</string>
+    <string name="obesityI">Obesidade Grau I</string>
+    <string name="obesityII">Obesidade Grau II</string>
+    <string name="obesityIII">Obesidade Grau III</string>
 </resources>
