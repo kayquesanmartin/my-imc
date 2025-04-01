@@ -1,5 +1,6 @@
 package io.github.kayquesanmartin.myimc
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var resultTextView: TextView
     private lateinit var mainButton: Button
     private lateinit var heightEditText: EditText
     private lateinit var weightEditText: EditText
@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        resultTextView = findViewById(R.id.resultTextView)
         mainButton = findViewById(R.id.mainButton)
         heightEditText = findViewById(R.id.heightEditText)
         weightEditText = findViewById(R.id.weightEditText)
@@ -59,14 +58,9 @@ class MainActivity : AppCompatActivity() {
 
                 val imc = weight / (height * height)
 
-                resultTextView.text = when {
-                    imc < 18.5 -> getString(R.string.underweight)
-                    imc in 18.5..24.9 -> getString(R.string.normal)
-                    imc in 25.0..29.9 -> getString(R.string.overweight)
-                    imc in 30.0..34.9 -> getString(R.string.obesityI)
-                    imc in 35.0..39.9 -> getString(R.string.obesityII)
-                    else -> getString(R.string.obesityIII)
-                }
+                val intent = Intent(this, SecondActivity::class.java)
+                intent.putExtra("IMC_VALUE", imc)
+                startActivity(intent)
             }
         }
     }
