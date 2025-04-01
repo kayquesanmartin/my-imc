@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">My IMC</string>
-    <string name="cm">cm</string>
+    <string name="m">0.00</string>
     <string name="kg">kg</string>
     <string name="weight">Peso:</string>
     <string name="height">Altura:</string>
@@ -12,4 +12,11 @@
     <string name="obesityI">Obesidade Grau I</string>
     <string name="obesityII">Obesidade Grau II</string>
     <string name="obesityIII">Obesidade Grau III</string>
+    <string name="calculo_de_imc">Cálculo de IMC</string>
+    <string name="resultado">Resultado:</string>
+
+    <string-array name="activity_height">
+        <item>m</item>
+        <item>ft</item>
+    </string-array>
 </resources>
