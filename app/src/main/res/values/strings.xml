@@ -13,7 +13,9 @@
     <string name="obesityII">Obesidade Grau II</string>
     <string name="obesityIII">Obesidade Grau III</string>
     <string name="calculo_de_imc">Cálculo de IMC</string>
-    <string name="resultado">Resultado:</string>
+    <string name="resultado">Seu IMC é: </string>
+    <string name="message">...</string>
+    <string name="voltar">voltar</string>
 
     <string-array name="activity_height">
         <item>m</item>
