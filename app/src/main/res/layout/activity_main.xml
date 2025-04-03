@@ -56,10 +56,11 @@
                 android:layout_width="111dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="10dp"
-                android:textColor="@color/black"
                 android:autofillHints=""
                 android:hint="@string/m"
-                android:inputType="numberDecimal"/>
+                android:inputType="numberDecimal"
+                android:maxLength="4"
+                android:textColor="@color/black" />
 
             <Spinner
                 android:id="@+id/spinner"
@@ -92,10 +93,11 @@
                 android:layout_width="111dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="10dp"
-                android:textColor="@color/black"
                 android:autofillHints=""
                 android:hint="@string/kg"
                 android:inputType="numberDecimal"
+                android:maxLength="3"
+                android:textColor="@color/black"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -9,7 +9,6 @@ import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -32,19 +31,19 @@ class MainActivity : AppCompatActivity() {
         unitSpinner = findViewById(R.id.spinner)
 
         unitSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent : AdapterView<*>?, view : View?, position : Int, id : Long) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 formatHeight()
             }
 
-            override fun onNothingSelected(parent : AdapterView<*>?) {}
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        heightEditText.addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(s : CharSequence?, start : Int, count : Int, after : Int) {}
+        heightEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s : CharSequence?, start : Int, before : Int, count : Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(s : Editable?) {
+            override fun afterTextChanged(s: Editable?) {
                 heightEditText.removeTextChangedListener(this)
                 formatHeight()
                 heightEditText.addTextChangedListener(this)
@@ -69,10 +68,10 @@ class MainActivity : AppCompatActivity() {
         val unit = unitSpinner.selectedItem.toString()
         val input = heightEditText.text.toString()
 
-        if (input.isNotEmpty() && input.toIntOrNull() != null) {
+        if (input.isNotEmpty()) {
             when (unit) {
                 "m" -> {
-                    if (input.length >= 3) {
+                    if (input.length >= 3 && input.toIntOrNull() != null) {
                         val meters = input.substring(0, input.length - 2)
                         val centimeters = input.substring(input.length - 2)
                         heightEditText.setText("$meters.$centimeters")
@@ -80,39 +79,48 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 "ft" -> {
-                    val inches = (input.toInt() * 0.393701).toInt()
-                    val feet = inches / 12
-                    val remainingInches = inches % 12
-                    heightEditText.setText("$feet'$remainingInches\"")
-                    heightEditText.setSelection(heightEditText.text.length)
+                    val parts = input.split("'")
+                    if (parts.size == 2) {
+                        val feet = parts[0].toIntOrNull() ?: 0
+                        val inches = parts[1].replace("\"", "").toIntOrNull() ?: 0
+                        heightEditText.setText("$feet'$inches\"")
+                        heightEditText.setSelection(heightEditText.text.length)
+                    }
                 }
             }
         }
     }
 
-    private fun convertHeightToMeters() : Double {
+    private fun convertHeightToMeters(): Double {
         val unit = unitSpinner.selectedItem.toString()
         val input = heightEditText.text.toString()
 
         return when (unit) {
-            "m" -> input.toDouble()
+            "m" -> input.toDoubleOrNull() ?: 0.0
             "ft" -> {
                 val parts = input.split("'")
-                val feet = parts[0].toInt()
-                val inches = parts[1].replace("\"", "").toInt()
-                (feet * 0.3048) + (inches * 0.0254)
+                if (parts.size == 2) {
+                    val feet = parts[0].toIntOrNull() ?: 0
+                    val inches = parts[1].replace("\"", "").toIntOrNull() ?: 0
+                    (feet * 0.3048) + (inches * 0.0254)
+                } else {
+                    0.0
+                }
             }
             else -> 0.0
         }
     }
 
     private fun validateInput(): Boolean {
-
         if (heightEditText.text.isEmpty() || weightEditText.text.isEmpty()) {
             Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
             return false
         }
+        if (heightEditText.text.toString().toDoubleOrNull() == 0.0 || weightEditText.text.toString().toDoubleOrNull() == 0.0) {
+            Toast.makeText(this, "Valores inválidos, insira um valor maior que zero.", Toast.LENGTH_SHORT).show()
+            return false
+        }
         return true
     }
-
 }
+
