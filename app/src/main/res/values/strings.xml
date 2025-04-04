@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">My IMC</string>
-    <string name="m">0.00</string>
-    <string name="kg">kg</string>
+    <string name="number">0.00</string>
     <string name="weight">Peso:</string>
     <string name="height">Altura:</string>
     <string name="imc">IMC</string>
@@ -20,5 +19,10 @@
     <string-array name="activity_height">
         <item>m</item>
         <item>ft</item>
+    </string-array>
+
+    <string-array name="activity_weight">
+        <item>kg</item>
+        <item>lb</item>
     </string-array>
 </resources>

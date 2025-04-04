@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@color/white"
+    android:background="@color/light_white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -28,7 +28,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="60dp"
         android:text="@string/calculo_de_imc"
-        android:textColor="#42037C"
+        android:textColor="@color/purple"
         android:textSize="48sp"
         android:textStyle="bold" />
 
@@ -57,13 +57,14 @@
                 android:layout_height="48dp"
                 android:layout_marginStart="10dp"
                 android:autofillHints=""
-                android:hint="@string/m"
+                android:hint="@string/number"
                 android:inputType="numberDecimal"
                 android:maxLength="4"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"/>
 
             <Spinner
-                android:id="@+id/spinner"
+                android:id="@+id/heightSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:entries="@array/activity_height"/>
@@ -94,14 +95,17 @@
                 android:layout_height="48dp"
                 android:layout_marginStart="10dp"
                 android:autofillHints=""
-                android:hint="@string/kg"
+                android:hint="@string/number"
                 android:inputType="numberDecimal"
-                android:maxLength="3"
+                android:maxLength="4"
                 android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textColorHint="@color/black" />
+
+            <Spinner
+                android:id="@+id/weightSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:entries="@array/activity_weight" />
         </TableRow>
 
     </TableLayout>
@@ -114,7 +118,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="60dp"
         android:text="@string/imc"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:background="@drawable/rounded_button"/>
 
 
 

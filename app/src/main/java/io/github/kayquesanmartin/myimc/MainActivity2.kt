@@ -18,19 +18,21 @@ class MainActivity2 : AppCompatActivity() {
     private lateinit var mainButton: Button
     private lateinit var heightEditText: EditText
     private lateinit var weightEditText: EditText
-    private lateinit var unitSpinner: Spinner
+    private lateinit var heightSpinner: Spinner
+    private lateinit var weightSpinner: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         setContentView(R.layout.activity_main2)
 
         mainButton = findViewById(R.id.mainButton)
         heightEditText = findViewById(R.id.heightEditText)
         weightEditText = findViewById(R.id.weightEditText)
-        unitSpinner = findViewById(R.id.spinner)
+        heightSpinner = findViewById(R.id.heightSpinner)
+        weightSpinner = findViewById(R.id.weightSpinner)
 
-        unitSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        heightSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 formatHeight()
             }
@@ -50,10 +52,30 @@ class MainActivity2 : AppCompatActivity() {
             }
         })
 
+        weightSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                formatWeight()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        weightEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                weightEditText.removeTextChangedListener(this)
+                formatWeight()
+                weightEditText.addTextChangedListener(this)
+            }
+        })
+
         mainButton.setOnClickListener {
             if (validateInput()) {
                 val height: Double = convertHeightToMeters()
-                val weight: Double = weightEditText.text.toString().toDouble()
+                val weight: Double = convertWeightToKilograms()
 
                 val imc = weight / (height * height)
 
@@ -64,8 +86,43 @@ class MainActivity2 : AppCompatActivity() {
         }
     }
 
+    private fun formatWeight() {
+        val unit = weightSpinner.selectedItem.toString()
+        val input = weightEditText.text.toString()
+
+        if (input.isNotEmpty()) {
+            when (unit) {
+                "kg" -> {
+                    if (input.length >= 3 && input.toIntOrNull() != null) {
+                        val kilograms = input.substring(0, input.length - 1)
+                        val grams = input.substring(input.length - 1)
+                        weightEditText.setText("$kilograms.$grams")
+                        weightEditText.setSelection(weightEditText.text.length)
+                    }
+                }
+
+                "lb" -> {
+                    val pounds = input.toIntOrNull() ?: 0
+                    weightEditText.setText("$pounds")
+                    weightEditText.setSelection(weightEditText.text.length)
+                }
+            }
+        }
+    }
+
+    private fun convertWeightToKilograms(): Double {
+        val unit = weightSpinner.selectedItem.toString()
+        val input = weightEditText.text.toString()
+
+        return when (unit) {
+            "kg" -> input.toDouble()
+            "lb" -> (input.toDouble() * 0.45359237)
+            else -> 0.0
+        }
+    }
+
     private fun formatHeight() {
-        val unit = unitSpinner.selectedItem.toString()
+        val unit = heightSpinner.selectedItem.toString()
         val input = heightEditText.text.toString()
 
         if (input.isNotEmpty()) {
@@ -92,7 +149,7 @@ class MainActivity2 : AppCompatActivity() {
     }
 
     private fun convertHeightToMeters(): Double {
-        val unit = unitSpinner.selectedItem.toString()
+        val unit = heightSpinner.selectedItem.toString()
         val input = heightEditText.text.toString()
 
         return when (unit) {
