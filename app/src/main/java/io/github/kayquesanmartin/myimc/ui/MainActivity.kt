@@ -1,4 +1,4 @@
-package io.github.kayquesanmartin.myimc
+package io.github.kayquesanmartin.myimc.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,10 +12,17 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import io.github.kayquesanmartin.myimc.R
+import io.github.kayquesanmartin.myimc.data.AppDatabase
+import io.github.kayquesanmartin.myimc.data.ImcRepository
+import io.github.kayquesanmartin.myimc.data.ImcRecord
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mainButton: Button
+    private lateinit var historyButton: Button
     private lateinit var heightEditText: EditText
     private lateinit var weightEditText: EditText
     private lateinit var unitSpinner: Spinner
@@ -26,9 +33,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         mainButton = findViewById(R.id.mainButton)
+        historyButton = findViewById(R.id.historyButton)
+//        historyButton = findViewById(R.id.historyButton)
         heightEditText = findViewById(R.id.heightEditText)
         weightEditText = findViewById(R.id.weightEditText)
         unitSpinner = findViewById(R.id.spinner)
+
+        historyButton.setOnClickListener {
+            startActivity(Intent(this, HistoryActivity::class.java))
+        }
 
         unitSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -56,6 +69,17 @@ class MainActivity : AppCompatActivity() {
                 val weight: Double = weightEditText.text.toString().toDouble()
 
                 val imc = weight / (height * height)
+
+                val imcRecord = ImcRecord(
+                    height = height,
+                    weight = weight,
+                    imcValue = imc
+                )
+
+                lifecycleScope.launch {
+                    val db = AppDatabase.getDatabase(applicationContext)
+                    db.imcDao().insert(imcRecord)
+                }
 
                 val intent = Intent(this, SecondActivity::class.java)
                 intent.putExtra("IMC_VALUE", imc)
