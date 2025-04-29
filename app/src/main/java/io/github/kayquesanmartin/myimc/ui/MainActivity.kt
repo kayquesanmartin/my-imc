@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
 
         mainButton = findViewById(R.id.mainButton)
         historyButton = findViewById(R.id.historyButton)
-//        historyButton = findViewById(R.id.historyButton)
         heightEditText = findViewById(R.id.heightEditText)
         weightEditText = findViewById(R.id.weightEditText)
         unitSpinner = findViewById(R.id.spinner)

@@ -1,5 +1,6 @@
 package io.github.kayquesanmartin.myimc.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -25,14 +26,20 @@ class HistoryActivity : AppCompatActivity() {
         val db = AppDatabase.getDatabase(applicationContext)
         imcRepository = ImcRepository(db.imcDao())
 
-        // Coletar os dados do Flow (solução moderna com Coroutines)
         lifecycleScope.launch {
             imcRepository.allRecords.collect { records ->
-                recyclerView.adapter = ImcAdapter(records) { id ->
-                    lifecycleScope.launch {
-                        imcRepository.delete(id)
+                recyclerView.adapter = ImcAdapter(records,
+                    onDelete = { id ->
+                        lifecycleScope.launch {
+                            imcRepository.delete(id)
+                        }
+                    },
+                    onEdit = { record ->
+                        val intent = Intent(this@HistoryActivity, EditImcActivity::class.java)
+                        intent.putExtra("RECORD", record)
+                        startActivity(intent)
                     }
-                }
+                )
             }
         }
     }

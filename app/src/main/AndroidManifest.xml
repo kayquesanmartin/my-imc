@@ -13,6 +13,9 @@
         android:theme="@style/Theme.MyIMC"
         tools:targetApi="31">
         <activity
+            android:name=".ui.EditImcActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.HistoryActivity"
             android:exported="false" />
         <activity

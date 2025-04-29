@@ -2,6 +2,7 @@ package io.github.kayquesanmartin.myimc.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 import java.util.Date
 
 @Entity(tableName = "imc_records")
@@ -11,4 +12,4 @@ data class ImcRecord(
     val weight: Double,
     val imcValue: Double,
     val date: Date = Date()
-)
+) : Serializable

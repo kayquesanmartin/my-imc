@@ -70,5 +70,5 @@ dependencies {
     // Room Database
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler) // Usando KSP para Room
+    ksp(libs.androidx.room.compiler)
 }

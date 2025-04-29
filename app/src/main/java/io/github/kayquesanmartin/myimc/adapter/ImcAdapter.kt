@@ -13,13 +13,15 @@ import java.util.Date
 import java.util.Locale
 
 class ImcAdapter(
-    private val records: List<ImcRecord>,
-    private val onDelete: (Int) -> Unit
+    private var records: List<ImcRecord>,
+    private val onDelete: (Int) -> Unit,
+    private val onEdit: (ImcRecord) -> Unit
 ) : RecyclerView.Adapter<ImcAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.textView)
         val deleteButton: Button = view.findViewById(R.id.deleteButton)
+        val editButton: Button = view.findViewById(R.id.editButton)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,12 +33,18 @@ class ImcAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val record = records[position]
         holder.textView.text = "IMC: ${record.imcValue.format(2)} (${record.date.format()})"
+
         holder.deleteButton.setOnClickListener { onDelete(record.id) }
+        holder.editButton.setOnClickListener { onEdit(record) }
     }
 
     override fun getItemCount() = records.size
+
+    fun updateList(newList: List<ImcRecord>) {
+        records = newList
+        notifyDataSetChanged()
+    }
 }
 
-// Extensions para formatação
 fun Double.format(digits: Int) = "%.${digits}f".format(this)
 fun Date.format() = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(this)
